@@ -1,0 +1,143 @@
+package COMP2102VİZE1.priorityQueue.pQMMH;
+
+public class MinPriorityQueue {
+
+    static int [] H = new int[50];
+    static int size=-1;
+
+    static int parent(int i ){
+        return (i-1)/2;
+    }
+
+    static int leftChild(int i){
+        return ((2*i)+1);
+    }
+
+    static int rightChild(int i){
+        return ((2*i)+2);
+    }
+
+    static void shiftUp(int i){
+        while(i>0 && H[parent(i)]> H[i]){
+            swap(parent(i),i);
+            i=parent(i); // güncelleme
+        }
+    }
+
+    static void shiftDown(int i){
+        int minIndex =i;
+        int l = leftChild(i);
+        if (l <= size && H[l]< H[minIndex]) {
+            minIndex =1;
+        }
+
+        int r = rightChild(i);
+
+        if(r<=size && H[r]< H[minIndex]){
+            minIndex=r;
+        }
+        if(i!=minIndex){
+            swap(i, minIndex);
+            shiftDown(minIndex);
+        }
+    }
+
+    static void insert(int p){
+        size=size+1;
+        H[size]=p;
+        shiftUp(size);
+    }
+
+    static int extractMin(){
+        int result =H[0];
+        H[0]=H[size];
+        size=size-1;
+
+        shiftDown(0);
+        return result;
+    }
+
+    static void changePriority(int i, int p){
+        int oldp=H[i];
+        H[i]=p;
+
+        if(p<oldp){
+            shiftUp(i);
+        }else{
+            shiftDown(i);
+        }
+
+    }
+
+    static int getMin(){
+        return H[0];
+    }
+
+    static void remove(int i){
+        H[i]= getMin()+1;
+        shiftUp(i);
+
+        extractMin();
+    }
+
+    static void swap(int i, int j){
+        int temp = H[i];
+        H[i]= H[j];
+        H[j]= temp;
+    }
+
+    public static void main(String[] args) {
+        insert(45);
+        insert(20);
+        insert(14);
+        insert(12);
+        insert(31);
+        insert(7);
+        insert(11);
+        insert(13);
+        insert(6);
+
+        int i = 0;
+
+        while (i<=size){
+            System.out.print(H[i]+" ");
+            i++;
+        }
+        System.out.println("\n");
+
+        System.out.println("Node with min priority: "+extractMin());
+
+        System.out.println("Priority queue after extracting minimum: ");
+
+        int j =0;
+        while (j<=size){
+            System.out.print(H[j]+" ");
+            j++;
+        }
+
+        System.out.println("\n");
+
+        changePriority(2,49);
+
+        System.out.println("priority queue after priority change: ");
+
+        int k =0;
+        while (k<=size){
+            System.out.print(H[k]+" ");
+            k++;
+        }
+
+        System.out.println("\n");
+
+        remove(3);
+
+        System.out.println("Priority queue after removing the element: ");
+
+        int l =0;
+        while (l<size){
+            System.out.print(H[l]+" ");
+            l++;
+        }
+    }
+
+}
